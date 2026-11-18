@@ -55,12 +55,16 @@
   .overlay{position:fixed;inset:0;background:rgba(255,255,255,.86);display:flex;align-items:center;justify-content:center;z-index:6}
   .overlay[hidden]{display:none}
   .box{background:#fff;border:2px solid #111;border-radius:22px;box-sizing:border-box}
-  #intro .box{width:min(520px,92vw);text-align:center;padding:28px 32px 32px;max-height:94vh;overflow:auto}
+  #intro .box{width:min(520px,92vw);padding:28px 36px 32px;max-height:94vh;overflow:auto}
+  #intro .txt{max-width:400px;margin:0 auto}
+  #intro .play-wrap{text-align:center}
+  .m{display:none}
+  @media (max-width:600px){ .m{display:inline} }
   #introLogo{width:min(400px,72vw);display:block;margin:0 auto 20px}
   #intro h2{margin:0 0 18px;font:700 24px/1.3 system-ui,sans-serif;color:#111}
-  #intro ol{text-align:left;margin:0 auto 18px;padding-left:24px;max-width:400px;font:17px/1.5 system-ui,sans-serif;color:#222}
+  #intro ol{margin:0 0 18px;padding-left:22px;font:17px/1.5 system-ui,sans-serif;color:#222}
   #intro ol li{margin-bottom:8px}
-  #intro p{margin:0 auto 22px;font:15px/1.5 system-ui,sans-serif;color:#666}
+  #intro p{margin:0 0 24px;font:16px/1.5 system-ui,sans-serif;color:#666}
   .play{font:700 18px system-ui,sans-serif;padding:12px 44px;background:#111;color:#fff}
   .play:hover{background:#fff;color:#111}
   #menu .box{padding:22px 26px 26px;width:min(620px,92vw)}
@@ -99,14 +103,16 @@
 <div id="intro" class="overlay">
   <div class="box">
     <img id="introLogo" alt="Slinky Master">
-    <h2>Lleva el resorte<br>hasta la bandera.</h2>
-    <ol>
-      <li>Arrastra la base del resorte<br>por la plataforma.</li>
-      <li>Agarra la parte de arriba y<br>estírala hasta donde quieras.</li>
-      <li>Suelta: la inercia hace el resto.</li>
-    </ol>
-    <p>Cuantos menos movimientos,<br>más estrellas.</p>
-    <button class="play" id="btnPlay">Jugar</button>
+    <div class="txt">
+      <h2>Lleva el resorte <br class="m">hasta la bandera.</h2>
+      <ol>
+        <li>Arrastra la base del resorte<br>por la plataforma.</li>
+        <li>Agarra la parte de arriba y<br>estírala hasta donde quieras.</li>
+        <li>Suelta: la inercia hace el resto.</li>
+      </ol>
+      <p>Cuantos menos movimientos, <br class="m">más estrellas.</p>
+    </div>
+    <div class="play-wrap"><button class="play" id="btnPlay">Jugar</button></div>
   </div>
 </div>
 <div id="menu" class="overlay" hidden>
@@ -224,12 +230,12 @@ const LEVELS = [
   { size: 45, mirror: true, build: a => {
       a.start(0, 250, 300); const e = a.stairs(250, 300, 2);
       a.floor(e.x, 620, e.y); a.floor(720, 900, e.y); a.floor(1000, 1180, e.y); a.wall(1180, 160);
-      a.saw(810, e.y, 26, { ax: 60, ay: 0, period: 3.2 }); a.goal(1050, 1150, e.y);
+      a.saw(810, e.y, 26, { ax: 45, ay: 0, period: 4 }); a.goal(1050, 1150, e.y);
   } },
   // 10 · columnas con un cañón
   { size: 48, build: a => {
       const f = a.cols([1, 2, 2, 2, 2], 1); const s = f.steps[4];
-      a.cannon(VW - 14, s.y - 16, -1, 2.4, 6); a.goal(f.x + 14, f.x + 190, f.y);
+      a.cannon(VW - 40, s.y - 16, -1, 2.4, 6); a.goal(f.x + 14, f.x + 190, f.y);
   } },
   // 11 · bola gigante
   { size: 52.5, build: a => {
@@ -241,7 +247,7 @@ const LEVELS = [
   { size: 52.5, build: a => {
       a.start(0, 300, 400); const e = a.stairs(300, 400, 3); a.floor(e.x, 1180, 610); a.wall(1180, 120);
       a.button(640, 720, 610, 'top', 'up');
-      a.block(520, 860, 240, 300); a.block(860, 912.5, 200, 247.5); a.block(912.5, 965, 150, 195); a.block(965, 1180, 100, 142.5);
+      a.block(520, 860, 190, 300); a.block(860, 912.5, 140, 247.5); a.block(912.5, 965, 100, 195); a.block(965, 1180, 100, 142.5);
       a.goal(990, 1150, 142.5, 'bottom');
   } },
   // 13 · plataforma que va y viene + sierra
@@ -262,7 +268,7 @@ const LEVELS = [
   // 15 · columnas, cañón y pinche
   { size: 45, mirror: true, build: a => {
       const f = a.cols([2, 2, 2, 2, 2], 1); const sp = f.steps[3], c = f.steps[7];
-      a.spike(sp.x0 + 8, sp.x1 - 8, sp.y); a.cannon(VW - 14, c.y - 16, -1, 2.2, 6.5);
+      a.spike(sp.x0 + 8, sp.x1 - 8, sp.y); a.cannon(VW - 40, c.y - 16, -1, 2.2, 6.5);
       a.goal(f.x + 14, f.x + 180, f.y);
   } },
   // 16 · arriba y abajo: dos botones
@@ -276,7 +282,7 @@ const LEVELS = [
   // 17 · rueda giratoria con cañón
   { size: 52.5, build: a => {
       a.start(0, 430, 250, 40); a.wheel(620, 400, 160, 5, 130, 22, 13);
-      a.block(800, BIG, 560, 600); a.cannon(VW - 14, 400, -1, 2.6, 6); a.goal(825, 1160, 560);
+      a.block(800, BIG, 560, 600); a.cannon(VW - 40, 400, -1, 2.6, 6); a.goal(825, 1160, 560);
   } },
   // 18 · bola, plataforma y sierra
   { size: 52.5, mirror: true, build: a => {
@@ -290,9 +296,9 @@ const LEVELS = [
   { size: 52.5, build: a => {
       a.start(0, 300, 220, 40);
       a.block(420, 900, 420, 460); a.button(760, 840, 420, 'top', 'left');
-      a.block(-BIG, 230, 360, 470); a.block(-BIG, 177.5, 470, 522.5); a.block(-BIG, 125, 522.5, 575);
-      a.block(-BIG, 72.5, 575, BIG);
-      a.goal(520, 568, 125, 'right');
+      a.block(-BIG, 330, 330, 440); a.block(-BIG, 277.5, 440, 492.5); a.block(-BIG, 225, 492.5, 545);
+      a.block(-BIG, 172.5, 545, BIG);
+      a.goal(565, 685, 172.5, 'right');
   } },
   // 20 · final: plataforma, gravedad invertida, sierra en el techo y cañón
   { size: 52.5, build: a => {
@@ -301,7 +307,7 @@ const LEVELS = [
       a.floor(760, 1180, 620); a.wall(1180, 120);
       a.button(860, 940, 620, 'top', 'up');
       a.block(700, 1180, 150, 200); a.saw(1000, 200, 30);
-      a.cannon(14, 590, 1, 2.5, 6);
+      a.cannon(40, 590, 1, 2.5, 6);
       a.goal(1080, 1170, 200, 'bottom');
   } },
 ];
@@ -314,7 +320,7 @@ function buildLevel(spec) {
     block: (x0, x1, y0, y1) => { const r = { x0, x1, y0, y1 }; RECTS.push(r); return r; },
     wall: (x0, y0) => a.block(x0, BIG, y0, BIG),
     floor: (x0, x1, y) => a.block(x0, x1, y, BIG),
-    start: (x0, x1, y, thick) => { START = { x0: Math.max(x0, 0), x1, y }; return a.block(x0 - BIG, x1, y, thick ? y + thick : BIG); },
+    start: (x0, x1, y, thick) => { START = { x0: Math.max(x0, 0), x1, y }; return a.block(x0 - BIG, x1, y, thick ? y + Math.max(thick, H + 10) : BIG); },
     // escalera que baja hacia la derecha; thick = grosor si es flotante
     stairs: (x, y, n, thick) => {
       // flotante: cada escalón baja hasta el grosor del siguiente, así la escalera es una sola franja sin huecos
@@ -504,7 +510,12 @@ function arcClear(base, tip) {
   for (const lift of [1, 1.6, 2.4, 3.4]) {
     const pts = arcPts(B, A, lift);
     let ok = true;
-    for (let i = 3; i < pts.length - 3 && ok; i++) if (rectAt(pts[i].x, pts[i].y) || pts[i].y < -40) ok = false;
+    for (let i = 3; i < pts.length - 3 && ok; i++) {
+      const p = pts[i], q = pts[Math.min(pts.length - 1, i + 1)], o = pts[i - 1];
+      const tx = q.x - o.x, ty = q.y - o.y, tl = Math.hypot(tx, ty) || 1, nx = -ty / tl * RR * 0.8, ny = tx / tl * RR * 0.8;
+      const wide = i > 9 && i < pts.length - 10;      // cerca de cada pila solo cuenta el centro
+      if (rectAt(p.x, p.y) || (wide && (rectAt(p.x + nx, p.y + ny) || rectAt(p.x - nx, p.y - ny))) || p.y < -40) ok = false;
+    }
     if (ok) return lift;
   }
   return 0;
@@ -545,7 +556,7 @@ const FLOW_TIME = 0.32;   // segundos que tardan las espiras en pasar de una pil
 const SWING_TIME = 0.22;  // segundos que tarda el extremo en dar la vuelta
 const UP = -Math.PI / 2, DOWN = Math.PI / 2;
 // Menor cantidad de movimientos de cada nivel (calculado con el simulador)
-const PARS = [1, 4, 1, 3, 2, 3, 2, 2, 1, 3, 2, 2, 2, 2, 3, 2, 2, 1, 3, 2];
+const PARS = [1, 4, 1, 3, 2, 3, 2, 2, 1, 3, 2, 2, 2, 2, 3, 2, 2, 1, 2, 2];
 
 // ======================================================
 //  Sonido: golpes reales de un slinky metálico bajando
@@ -629,6 +640,7 @@ function advanceWorld(dt) {
   if (['place', 'wait', 'flow'].includes(S.phase)) pts.push(S.back, S.front);
   else if (S.phase === 'swing') pts.push(S.front);
   if (S.home.grav === GRAV && !pts.includes(S.home)) pts.push(S.home);
+  if (S.phase === 'gather' && !S.gather.lost) pts.push(S.gather.to);   // donde se junta también viaja con la plataforma
   const carry = [];
   for (const p of pts) { const r = srcUnder(p); if (r && (r.mv || r.wheel)) carry.push({ p, r, old: localRect(r) }); }
   updateWorld(T);
@@ -706,7 +718,7 @@ function startSwing(settle) {
 }
 
 // ---- Caída: el resorte pasa a ser una cadena de espiras con gravedad ----
-const G = 0.32, SMAX = 6.5;
+const G = 0.32, SMAX = 4.5;
 function startFall(why, dirW) {
   const snap = lastSnap || [], prev = prevSnap && prevSnap.length === snap.length ? prevSnap : snap;
   let kx = why === 'slip' ? 1.0 * S.dir : why === 'bump' ? -0.8 * S.dir : why === 'out' ? 2 * S.dir : why === 'skip' ? 0.5 * S.dir : 0;
@@ -749,7 +761,7 @@ function ragStep() {
       const o = pushOut(q.x, q.y, { x: q.ox, y: q.oy });
       if (!o) continue;
       q.x += o.dx; q.y += o.dy;
-      if (o.dy < 0) { q.py = q.y; q.px = q.x - (q.x - q.px) * 0.5; }
+      if (o.dy < 0) { q.py = q.y; q.px = q.x - (q.x - q.px) * 0.3; }
     }
   }
   let maxV = 0;
@@ -761,10 +773,10 @@ function ragStep() {
 }
 function updateFall(dt) {
   const R = S.rag; R.t += dt; R.acc += dt;
-  while (R.acc > 1 / 60) { R.acc -= 1 / 60; R.still = ragStep() < 0.08 ? R.still + 1 : 0; }
+  while (R.acc > 1 / 60) { R.acc -= 1 / 60; R.still = ragStep() < 0.25 ? R.still + 1 : 0; }
   const P = R.p;
   const gone = P.every(q => q.y > LH + 30 || q.x < -30 || q.x > LW + 30);
-  if (!(gone || R.still > 15 || R.t > (S.dead ? 2.2 : 4))) return;
+  if (!(gone || R.still > 10 || R.t > (S.dead ? 1.6 : 2.2))) return;
   if (S.dead) return respawn();
   const cx = P.reduce((a, q) => a + q.x, 0) / P.length, minY = Math.min(...P.map(q => q.y));
   const r = !gone && !outOfBounds(cx) ? support(cx, minY - 1) : null;
@@ -853,7 +865,7 @@ function update(dt) {
   } else if (S.phase === 'gather') {
     const g = S.gather; g.t += dt / (g.lost ? 0.45 : 0.3);
     if (g.t >= 1) {
-      if (g.lost) { S.back = { x: g.to.x, y: g.to.y }; S.front = { ...S.back }; S.phase = 'place'; }
+      if (g.lost) { S.back = { x: S.home.x, y: S.home.y }; S.front = { ...S.back }; S.phase = 'place'; }
       else { stepSound(0.5); finishStop(g.to); }
     }
   } else if (S.phase === 'gfall') {
@@ -933,12 +945,12 @@ function flushCoils(alpha = 1) {
     return { ax: c.x + nx * RR, ay: c.y + ny * RR, bx: c.x - nx * RR, by: c.y - ny * RR };
   });
   ctx.globalAlpha = alpha;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 0.7;
   for (let i = 0; i < coils.length - 1; i++) {              // alambre de atrás
     ctx.strokeStyle = shades(coils[i].abs)[0];
     ctx.beginPath(); ctx.moveTo(ends[i].bx, ends[i].by); ctx.lineTo(ends[i + 1].ax, ends[i + 1].ay); ctx.stroke();
   }
-  ctx.lineWidth = 2.1;
+  ctx.lineWidth = 1.3;
   for (let i = 0; i < coils.length; i++) {
     const e = ends[i], [d, m, l] = shades(coils[i].abs);
     const g = ctx.createLinearGradient(e.ax, e.ay, e.bx, e.by);
@@ -985,7 +997,7 @@ function drawStack(g, absOf) {
 }
 function drawChain(pts) {
   for (let i = 0; i < pts.length; i++) {
-    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+    const a = pts[Math.max(0, i - 3)], b = pts[Math.min(pts.length - 1, i + 3)];
     addCoil(pts[i].x, pts[i].y, Math.atan2(b.y - a.y, b.x - a.x) || UP, pts[i].abs);
   }
   flushCoils();
@@ -996,9 +1008,9 @@ function drawSlinky() {
   if (S.phase === 'swing') return drawSwing();
   if (S.phase === 'fall') return drawChain(S.rag.p);
   if (S.phase === 'gather') {
-    const g = S.gather, e = 1 - Math.pow(1 - Math.min(1, g.t), 3);
+    const g = S.gather, e = 1 - Math.pow(1 - Math.min(1, g.t), 3), to = g.lost ? S.home : g.to;
     return drawChain(g.from.map(q => {
-      const tx = g.to.x, ty = g.to.y - LIFT - stackHeightOf(q.abs) * GAP;
+      const tx = to.x, ty = to.y - LIFT - stackHeightOf(q.abs) * GAP;
       return { x: q.x + (tx - q.x) * e, y: q.y + (ty - q.y) * e, abs: q.abs };
     }));
   }
@@ -1025,16 +1037,17 @@ function faceStrip(f, thick, color) {
   if (f.face === 'top' || f.face === 'bottom') ctx.fillRect(f.a0, n.y < 0 ? f.at - thick : f.at, f.a1 - f.a0, thick);
   else ctx.fillRect(n.x < 0 ? f.at - thick : f.at, f.a0, thick, f.a1 - f.a0);
 }
+const STRIP = 5;   // grosor de la base amarilla y de los botones magenta
 function drawFlag(f) {
-  faceStrip(f, 3, '#FFDD00');
+  faceStrip(f, STRIP, '#FFDD00');
   const n = NORMAL[f.face], t = { x: -n.y, y: n.x };
   const c = f.face === 'top' || f.face === 'bottom' ? { x: (f.a0 + f.a1) / 2, y: f.at } : { x: f.at, y: (f.a0 + f.a1) / 2 };
   const E = { x: c.x + n.x * 58, y: c.y + n.y * 58 };
-  ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(c.x + n.x * 3, c.y + n.y * 3); ctx.lineTo(E.x, E.y); ctx.stroke();
-  const tt = (f.face === 'bottom' || f.face === 'right') ? { x: -t.x, y: -t.y } : t;
-  ctx.fillStyle = '#FFDD00';
+  const tt = f.face === 'bottom' ? { x: -t.x, y: -t.y } : t;
+  ctx.fillStyle = '#FFDD00';                                   // primero el banderín, detrás del mástil
   ctx.beginPath(); ctx.moveTo(E.x, E.y); ctx.lineTo(E.x + tt.x * 25 - n.x * 8, E.y + tt.y * 25 - n.y * 8); ctx.lineTo(E.x - n.x * 16, E.y - n.y * 16); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#000'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(c.x + n.x * STRIP, c.y + n.y * STRIP); ctx.lineTo(E.x + n.x * 1, E.y + n.y * 1); ctx.stroke();
 }
 function drawSaw(s) {
   const teeth = 22, rot = T * 6;
@@ -1051,14 +1064,14 @@ function drawSaw(s) {
 function drawWorld() {
   ctx.fillStyle = '#000';
   for (const r of RECTS) if (r.x1 > r.x0) ctx.fillRect(r.x0, r.y0, r.x1 - r.x0 + 0.5, r.y1 - r.y0 + 0.3);
-  ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+  ctx.strokeStyle = '#000'; ctx.lineWidth = 4.5;
   for (const w of WHEELS) {                                   // rayos de la rueda
     for (const r of RECTS) if (r.wheel && r.wheel.cx === w.cx) {
       ctx.beginPath(); ctx.moveTo(w.cx, w.cy); ctx.lineTo((r.x0 + r.x1) / 2, (r.y0 + r.y1) / 2); ctx.stroke();
     }
-    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(w.cx, w.cy, 9, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(w.cx, w.cy, 11, 0, Math.PI * 2); ctx.fill();
   }
-  for (const b of BUTTONS) faceStrip(b, 7, '#E43DF0');
+  for (const b of BUTTONS) faceStrip(b, STRIP, '#E43DF0');
   if (GOAL) drawFlag(GOAL);
   for (const s of SAWS) drawSaw(s);
   ctx.fillStyle = '#000';
@@ -1068,8 +1081,17 @@ function drawWorld() {
     for (let k = 0; k < n; k++) { ctx.moveTo(s.x0 + k * w, s.y); ctx.lineTo(s.x0 + (k + 0.5) * w, s.y - s.h * s.k); ctx.lineTo(s.x0 + (k + 1) * w, s.y); }
     ctx.fill();
   }
-  for (const c of CANNONS) { ctx.fillRect(c.x - 12, c.y - 9, 24, 18); ctx.fillRect(c.dir > 0 ? c.x + 8 : c.x - 22, c.y - 4, 14, 8); }
-  for (const b of bullets) { ctx.beginPath(); ctx.ellipse(b.x, b.y, 7, 3.5, 0, 0, Math.PI * 2); ctx.fill(); }
+  for (const c of CANNONS) {
+    if (c.dir < 0) { ctx.fillRect(c.x - 12, c.y - 11, BIG, 22); ctx.fillRect(c.x - 26, c.y - 5, 16, 10); }
+    else { ctx.fillRect(-BIG, c.y - 11, BIG + c.x + 12, 22); ctx.fillRect(c.x + 10, c.y - 5, 16, 10); }
+  }
+  for (const b of bullets) {
+    const d = Math.sign(b.vx) || 1, back = b.x - d * 7, front = b.x + d * 3;
+    ctx.beginPath();
+    ctx.moveTo(back, b.y - 3.5); ctx.lineTo(front, b.y - 3.5);
+    ctx.arc(front, b.y, 3.5, -Math.PI / 2, Math.PI / 2, d < 0);
+    ctx.lineTo(back, b.y + 3.5); ctx.closePath(); ctx.fill();
+  }
   for (const b of balls) if (b.state === 'on') {
     ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(b.x + Math.cos(b.rot) * b.r * 0.55, b.y + Math.sin(b.rot) * b.r * 0.55, b.r * 0.1, 0, Math.PI * 2); ctx.fill();
@@ -1211,7 +1233,14 @@ function resize() {
   if (Hd > Wd) {                                       // vertical: ocupa todo el ancho, un 10 % más cerca
     scale = Wd / VW * 1.1;
     offX = (Wd - VW * scale) / 2;
-    offY = hh + 12 - SKY * scale;
+    // centra la parte jugable del nivel en el espacio que queda debajo del encabezado
+    let top = START ? START.y - 50 : SKY, bot = 0;
+    for (const r of RECTS) { if (r.y0 > 60 && r.y0 < VH) { top = Math.min(top, r.y0 - 10); bot = Math.max(bot, r.y0 + 30); } }
+    if (GOAL && (GOAL.face === 'top' || GOAL.face === 'bottom')) { top = Math.min(top, GOAL.at - 70); bot = Math.max(bot, GOAL.at + 20); }
+    top = Math.max(60, top); bot = Math.min(VH, Math.max(bot, top + 200));
+    offY = hh + (Hd - hh) / 2 - ((top + bot) / 2) * scale;
+    offY = Math.min(offY, hh + 8 - top * scale + (Hd - hh) * 0.5);
+    offY = Math.max(offY, hh + 8 - top * scale);
   } else {
     scale = Math.min(Wd / VW, (Hd - hh - 8) / (VH - SKY));
     offX = (Wd - VW * scale) / 2;
